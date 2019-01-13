@@ -21,8 +21,9 @@ public class UploadController {
 
     //Save the uploaded file to this folder
     private static String WORKIN_DIR = System.getProperty("user.dir");
-    private static String UPLOADED_FOLDER = new File(WORKIN_DIR).getAbsoluteFile().getParent()+ "/recordings";
-    private static String RESULT_FOLDER = new File(WORKIN_DIR).getAbsoluteFile().getParent()+ "/results";
+    private static String PARENT_WORKIN_DIR = new File(WORKIN_DIR).getAbsoluteFile().getParent();
+    private static String UPLOADED_FOLDER = PARENT_WORKIN_DIR+ "/recordings";
+    private static String RESULT_FOLDER = PARENT_WORKIN_DIR+ "/results";
 
     static {
         if(!new File(UPLOADED_FOLDER).exists()){
@@ -76,15 +77,11 @@ public class UploadController {
 
 
     @GetMapping("/resultList")
-    public String resultList(Model model) {
-/*        String workingDir = System.getProperty("user.dir");
-        File file = new File(workingDir);
-        System.out.println(workingDir);
-        String parentPath = file.getAbsoluteFile().getParent();
-        System.out.println(parentPath);
+    public String resultList(Model model) throws IOException {
+//        String command = "python " + PARENT_WORKIN_DIR+"/test.py";
+        String command = "python D:/Study/Politechnika/IIStopien/Zespolowy/spring-boot-file-upload-example/test.py";
 
-        File folder = new File(parentPath);*/
-
+        Process p = Runtime.getRuntime().exec(command);
 
         File folder = new File(RESULT_FOLDER);
         File[] listOfFiles = folder.listFiles();
@@ -146,7 +143,7 @@ public class UploadController {
 
             // Get the file and save it somewhere
             byte[] bytes = file.getBytes();
-            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+            Path path = Paths.get(UPLOADED_FOLDER +"/"+ file.getOriginalFilename());
             Files.write(path, bytes);
 
             redirectAttributes.addFlashAttribute("message",
