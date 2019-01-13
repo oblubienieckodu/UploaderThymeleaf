@@ -78,10 +78,12 @@ public class UploadController {
 
     @GetMapping("/resultList")
     public String resultList(Model model) throws IOException {
-//        String command = "python " + PARENT_WORKIN_DIR+"/test.py";
-        String command = "python D:/Study/Politechnika/IIStopien/Zespolowy/spring-boot-file-upload-example/test.py";
-
-        Process p = Runtime.getRuntime().exec(command);
+/*      String command = "python /c start python "+ PARENT_WORKIN_DIR+"/test.py";
+        Process p = Runtime.getRuntime().exec(command);*/
+        ProcessBuilder builder = new ProcessBuilder("python", "test.py");
+        builder.directory(new File(PARENT_WORKIN_DIR));
+        builder.redirectError();
+        Process newProcess = builder.start();
 
         File folder = new File(RESULT_FOLDER);
         File[] listOfFiles = folder.listFiles();
