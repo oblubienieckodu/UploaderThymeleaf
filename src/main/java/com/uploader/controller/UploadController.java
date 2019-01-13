@@ -20,8 +20,18 @@ import java.util.ArrayList;
 public class UploadController {
 
     //Save the uploaded file to this folder
-    private static String UPLOADED_FOLDER = "D://videos//";
-    private static String RESULT_FOLDER = "D://result//";
+    private static String WORKIN_DIR = System.getProperty("user.dir");
+    private static String UPLOADED_FOLDER = new File(WORKIN_DIR).getAbsoluteFile().getParent()+ "/recordings";
+    private static String RESULT_FOLDER = new File(WORKIN_DIR).getAbsoluteFile().getParent()+ "/results";
+
+    static {
+        if(!new File(UPLOADED_FOLDER).exists()){
+            new File(UPLOADED_FOLDER).mkdir();
+        }
+        if(!new File(RESULT_FOLDER).exists()){
+            new File(RESULT_FOLDER).mkdir();
+        }
+    }
 
     @GetMapping("/")
     public String index() {
@@ -67,6 +77,15 @@ public class UploadController {
 
     @GetMapping("/resultList")
     public String resultList(Model model) {
+/*        String workingDir = System.getProperty("user.dir");
+        File file = new File(workingDir);
+        System.out.println(workingDir);
+        String parentPath = file.getAbsoluteFile().getParent();
+        System.out.println(parentPath);
+
+        File folder = new File(parentPath);*/
+
+
         File folder = new File(RESULT_FOLDER);
         File[] listOfFiles = folder.listFiles();
         ArrayList<String> listOfFilename = new ArrayList<>();
